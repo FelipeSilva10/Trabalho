@@ -3,12 +3,7 @@
 #include <string.h>
 #include "abb.h"
 
-struct No{
- char nome[100];
- int id;
- struct No *esq;
- struct No *dir;
-};
+
 struct No *inserir(struct No *raiz, char nome[], int id){
  if(raiz == NULL){
   struct No *novo = malloc(sizeof(struct No));
@@ -44,16 +39,16 @@ struct No *buscar(struct No *raiz, char nome[]){
 void ordem(struct No *raiz){
  if(raiz == NULL) return;
  ordem(raiz->esq);
- printf("%s", raiz->nome);
- printf("%d", raiz->id);
+ printf("(%s, ", raiz->nome);
+ printf("%d)\n", raiz->id);
  ordem(raiz->dir);
 }
 void liberar(struct No *raiz){
  if(raiz == NULL){
   return;
  }else{
-  liberar(raiz->esq);
-  liberar(raiz->dir);
-  free(raiz);
+    liberar(raiz->esq);
+    liberar(raiz->dir);
+    free(raiz);
  }
 }

@@ -2,43 +2,31 @@
 #include <stdlib.h>
 #include "grafo.h"
 
-
-typedef struct rua{
-int destino;
-int origem;
-int distancia;
-struct rua *proxima;} rua;
-
-
- struct grafo{
-    int numeroLocalidades;
-    rua **listaAdj;
-};
-
-
 Grafo *criaGrafo(int numeroLocalidades){
-    Grafo *grafo;
-grafo  = (Grafo*) malloc(sizeof(struct grafo));
-if(grafo != NULL){
-    grafo->numeroLocalidades = numeroLocalidades;
+    Grafo* grafo;
+    grafo = (Grafo*)malloc(sizeof(Grafo));
+    if(grafo != NULL){
 
-    grafo->listaAdj = (rua*) malloc (numeroLocalidades * sizeof(rua));
-    if(grafo->listaAdj == NULL)
-    {
-        free(grafo);
+        grafo->numeroLocalidades = numeroLocalidades;
+        grafo->listaAdj = (rua**)malloc(numeroLocalidades * sizeof(rua*));
+
+        if(grafo->listaAdj == NULL)
+        {
+            free(grafo);
+            return NULL;
+        }
+        for(int i = 0; i<numeroLocalidades;  i++){
+            grafo->listaAdj[i] = NULL;
+
+
+        }
+        return grafo;
+
+    }
+    else{
         return NULL;
     }
-    for(int i = 0; i<numeroLocalidades;  i++){
-        grafo->listaAdj[i] = NULL;
-
-
-    }
-    return grafo;
-
 }
-else{
-    return NULL;
-}}
 
 
 void liberaGrafo(Grafo *grafo){
@@ -138,17 +126,127 @@ int insereRua(Grafo *grafo, int origem, int destino, int distancia){
     return encontrado;}}
 
 
+void dijkstra(Grafo* grafo, int origem, int destino){
 
+    int n = grafo->numeroLocalidades;
+
+    int visited[n] = {};
+    int dist[n] = {};
+    int prev[n] = {};
+
+    for(int i=0;i<n;i++) dist[i] = 9999999, prev[i] = -1;
+
+    rua* cur = grafo->listaAdj[origem];
+
+    dist[origem] = 0;
+
+    for(int i=0;i<n;i++){
+
+        int u = -1;
+
+        for(int j=0;j<n;j++){
+            if(!visited[j] && (u == -1 || dist[j] < dist[i])) u = j;
+        }
+
+        if(dist[u] == 9999999) break;
+
+        visited[u] = 1;
+
+        rua* r = grafo->listaAdj[u];
+
+
+        while(r != NULL){
+            int v = r->destino;
+
+            if(dist[u] + r->distancia < dist[v]){
+                dist[v] = dist[u] + r->distancia;
+                prev[v] = u;
+            }
+
+            r = r->proxima;
+        }
+    }
+
+    printf("Distancia minima: %d\n", dist[destino]);
+    printf("Caminho (ID): ");
+    printf("%d ", origem);
+
+    int caminho[n] = {};
+    int tam = 0;
+
+    for(int v = destino; prev[v] != -1; v = prev[v]){
+        caminho[tam++] = v;
+    }
+
+    for(int i = tam-1;i>=0;i--){
+        printf("%d ", caminho[i]);
+    }
+    printf("\n");
+
+}
+
+void mst(Grafo* g){
+
+    int origem = 0; // considerei id = 0 como raiz da arvore
+    int n = g->numeroLocalidades;
+
+    int pai[n];
+    int key[n];
+    int visited[n];
+
+    for(int i=0;i<n;i++){
+        key[i] = INT_MAX;
+        visited[i] = 0;
+        pai[i] = -1;
+    }
+
+    key[origem] = 0;
+
+    for(int count=0; count<n-1; count++){
+
+        int u = -1;
+        for(int i=0;i<n;i++){
+            if(!visited[i] && (u==-1 || key[i] < key[u]))
+                u = i;
+        }
+
+        visited[u] = 1;
+
+        rua *r = g->listaAdj[u];
+        while(r){
+            int v = r->destino;
+
+            if(!visited[v] && r->distancia < key[v]){
+                key[v] = r->distancia;
+                pai[v] = u;
+            }
+
+            r = r->proxima;
+        }
+    }
+
+    printf("Arestas da arvore geradora minima:\n");
+    int total = 0;
+
+    for(int i=0;i<n;i++){
+        if(pai[i] != -1){
+            printf("%d - %d\n", pai[i], i);
+            total += key[i];
+        }
+    }
+
+    printf("Custo total: %d\n", total);
+
+}
 
 
 void imprimeGrafo(Grafo *grafo){
     if (grafo != NULL){
         for(int i = 0; i < grafo->numeroLocalidades; i++){
-                printf("Localidade %d", i);
             rua *atual = grafo->listaAdj[i];
-            if(atual == NULL){
-                printf("Não há ruas conectadas\n");
-            }
+            if(atual == NULL) break;
+            printf("Localidade %d:\n", i);
+
             while(atual != NULL){
                 printf("Da localidade %d para a localidade %d, a distancia eh de %d\n",i, atual->destino, atual->distancia);
                 atual = atual->proxima;

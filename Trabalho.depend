@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1771473083 source:c:\users\italo\onedrive\햞ea de trabalho\ed2\trabalho\main.c
+	<stdio.h>
+	<stdlib.h>
+	<abb.h>
+	<grafo.h>
+	<string.h>
+	<direct.h>
+
+1771472604 c:\users\italo\onedrive\햞ea de trabalho\ed2\trabalho\abb.h
+
+1771473111 source:c:\users\italo\onedrive\햞ea de trabalho\ed2\trabalho\abb.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"abb.h"
+
+1771471318 source:c:\users\italo\onedrive\햞ea de trabalho\ed2\trabalho\grafo.c
+	<stdio.h>
+	<stdlib.h>
+	"grafo.h"
+
+1771468392 c:\users\italo\onedrive\햞ea de trabalho\ed2\trabalho\grafo.h
+
