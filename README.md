@@ -66,3 +66,19 @@ Os vértices são armazenados na ABB e exibidos em **ordem alfabética** (percur
 | 8  | RU               | Provisório, PROAE         |
 
 ---
+
+## 4. Representação Visual
+
+### Figura 1 — Grafo G(V, A)
+
+> Estrutura topológica do grafo com pesos nas arestas (distâncias em metros).
+
+![Grafo G(V,A)](ufu%20mapa/grafo_abstrato.png)
+
+---
+
+### Figura 2 — Contexto Geográfico
+
+> Pontos reais do Campus Santa Mônica utilizados como vértices para coleta das distâncias.
+
+![Contexto Geográfico](ufu%20mapa/ufu_mapa.png)
